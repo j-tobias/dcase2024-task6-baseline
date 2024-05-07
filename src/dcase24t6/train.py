@@ -12,12 +12,16 @@ os.environ["TRANSFORMERS_OFFLINE"] = "TRUE"
 os.environ["HF_HUB_OFFLINE"] = "TRUE"
 
 import logging
-import os.path as osp
+import multiprocessing as mp
 import sys
 import time
 from datetime import timedelta
 from pathlib import Path
 from typing import Any, Mapping
+
+# Set multiprocessing start method to 'spawn'
+mp.set_start_method("spawn", force=True)
+
 
 import hydra
 from hydra.core.hydra_config import HydraConfig
@@ -51,7 +55,7 @@ pylog = logging.getLogger(__name__)
 
 @hydra.main(
     version_base=None,
-    config_path=osp.join("..", "conf"),
+    config_path=os.environ.get("HYDRA_CONFIG_PATH"),
     config_name="train",
 )
 def train(cfg: DictConfig) -> None | float:

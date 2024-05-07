@@ -11,17 +11,20 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 os.environ["TRANSFORMERS_OFFLINE"] = "FALSE"
 os.environ["HF_HUB_OFFLINE"] = "FALSE"
 
-import os.path as osp
+import multiprocessing as mp
 
 import hydra
 from omegaconf import DictConfig
 
 from dcase24t6.train import train
 
+# Set multiprocessing start method to 'spawn'
+mp.set_start_method("spawn", force=True)
+
 
 @hydra.main(
     version_base=None,
-    config_path=osp.join("..", "conf"),
+    config_path=os.environ.get("HYDRA_CONFIG_PATH"),
     config_name="test",
 )
 def test(cfg: DictConfig) -> None | float:

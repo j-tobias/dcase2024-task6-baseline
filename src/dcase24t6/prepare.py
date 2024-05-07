@@ -13,7 +13,6 @@ os.environ["HF_HUB_OFFLINE"] = "FALSE"
 
 import logging
 import os
-import os.path as osp
 import time
 from datetime import timedelta
 from pathlib import Path
@@ -38,10 +37,15 @@ from dcase24t6.utils.saving import save_to_yaml
 
 pylog = logging.getLogger(__name__)
 
+import multiprocessing as mp
+
+# Set multiprocessing start method to 'spawn'
+mp.set_start_method("spawn", force=True)
+
 
 @hydra.main(
     version_base=None,
-    config_path=osp.join("..", "conf"),
+    config_path=os.environ.get("HYDRA_CONFIG_PATH"),
     config_name="prepare",
 )
 def prepare(cfg: DictConfig) -> None:
