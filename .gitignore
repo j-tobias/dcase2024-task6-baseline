@@ -160,7 +160,17 @@ cython_debug/
 #.idea/
 
 logs*/
-data/
+
 
 jz*.yaml
 *.ign.py
+
+
+APIKeys.json
+
+
+data/CLOTHO_v2.1/archives
+data/CLOTHO_v2.1/clotho_audio_files
+data/HDF/*
+data/HDF_backup/*
+data/CLOTHO_v2.1/clotho_csv_files_added_caption/clotho_captions_development.csv

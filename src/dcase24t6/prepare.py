@@ -96,6 +96,25 @@ def prepare(cfg: DictConfig) -> None:
         f"Job results are saved in '{cfg.save_dir}'. (duration={pretty_total_duration})"
     )
 
+    # PREPARING HDF FOR CLOTHO DONE
+    # START PREPARING FOR AUDIOCAPS OR WAVCAPS
+    if cfg.load_audiocaps:
+        hdf_datasets_audiocaps = prepare_data_metrics_models_audiocaps(
+            dataroot=cfg.audiocaps_data.data_root,
+            subsets=cfg.audiocaps_data.subsets,
+            download_audiocaps=cfg.audiocaps_data.download,
+            force=cfg.audiocaps_data.force,
+            hdf_pattern=cfg.audiocaps_data.hdf_pattern,
+            pre_process=pre_process,
+            overwrite=cfg.audiocaps_data.overwrite,
+            batch_size=cfg.batch_size,
+            num_workers=cfg.num_workers,
+            size_limit=cfg.size_limit,
+            complexity_profiler=complexity_profiler,
+            verbose=cfg.verbose,
+        )
+        print(hdf_datasets_audiocaps)
+
 
 def prepare_data_metrics_models(
     dataroot: str | Path = "data",
@@ -126,13 +145,14 @@ def prepare_data_metrics_models(
             force=force,
             verbose=verbose,
             clean_archives=False,
-            verify_files=True,
+            verify_files=False,
         )
 
     hdf_datasets = {}
     dataset_name = "clotho"
 
     for subset in subsets:
+        print("SUBSET: ", subset)
         dataset = Clotho(
             root=dataroot,
             subset=subset,
@@ -197,6 +217,45 @@ def save_prepare_stats(
 
     job_info_fpath = save_dir.joinpath("job_info.yaml")
     save_to_yaml(job_info, job_info_fpath, resolve=True)
+
+
+def prepare_data_metrics_models_audiocaps(
+    dataroot: str | Path = "data",
+    subsets: Iterable[str] = (),
+    download_audiocaps: bool = True,
+    force: bool = False,
+    hdf_pattern: str = "{dataset}_{subset}.hdf",
+    pre_process: Callable | None = None,
+    overwrite: bool = False,
+    batch_size: int = 32,
+    num_workers: int | Literal["auto"] = "auto",
+    size_limit: int | None = None,
+    complexity_profiler: ComplexityProfiler | None = None,
+    verbose: int = 0,
+) -> dict[str, HDFDataset]:
+
+    # Define Path and Name where to save the Dataset
+    if download_audiocaps:
+        # download AudioCaps
+        pass
+
+    # hdf_datasets = {}
+    dataset_name = "audiocaps"
+
+    for subset in subsets:
+
+        # Here comes the Code to preprocess each Subset independetly
+        # Load Dataset
+        # TODO
+
+        hdf_fname = hdf_pattern.format(
+            dataset=dataset_name,
+            subset=subset,
+        )
+        hdf_fpath = dataroot.joinpath("HDF", hdf_fname)
+        os.makedirs(hdf_fpath.parent, exist_ok=True)
+
+    pass
 
 
 if __name__ == "__main__":

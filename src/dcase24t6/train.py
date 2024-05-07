@@ -55,6 +55,10 @@ pylog = logging.getLogger(__name__)
     config_name="train",
 )
 def train(cfg: DictConfig) -> None | float:
+
+    print(20 * "__")
+    print(cfg)
+    print(20 * "__")
     seed_everything(cfg.seed)
 
     start_time = time.perf_counter()
