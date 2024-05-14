@@ -6,7 +6,7 @@ defaults:
   - path: local
   - hydra: custom
   - _self_
-  - load_audiocaps: true
+
 
 # --- Common args
 datetime: ${now:%Y.%m.%d-%H.%M.%S}  # str
@@ -27,14 +27,3 @@ overwrite: false  # bool
 batch_size: 32  # int
 num_workers: "auto"  # int | "auto"
 size_limit: null  # int | null
-
-
-# --- Prepare AudioCaps args
-audiocaps_data:
-
-  data_root: ""
-  subsets: []
-  download: true
-  force: false
-  hdf_pattern: "audiocaps_{subset}_${hydra:runtime.choices.pre_process}.hdf"
-  overwrite: false

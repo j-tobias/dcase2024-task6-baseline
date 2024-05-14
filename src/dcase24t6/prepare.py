@@ -100,25 +100,6 @@ def prepare(cfg: DictConfig) -> None:
         f"Job results are saved in '{cfg.save_dir}'. (duration={pretty_total_duration})"
     )
 
-    # PREPARING HDF FOR CLOTHO DONE
-    # START PREPARING FOR AUDIOCAPS OR WAVCAPS
-    if cfg.load_audiocaps:
-        hdf_datasets_audiocaps = prepare_data_metrics_models_audiocaps(
-            dataroot=cfg.audiocaps_data.data_root,
-            subsets=cfg.audiocaps_data.subsets,
-            download_audiocaps=cfg.audiocaps_data.download,
-            force=cfg.audiocaps_data.force,
-            hdf_pattern=cfg.audiocaps_data.hdf_pattern,
-            pre_process=pre_process,
-            overwrite=cfg.audiocaps_data.overwrite,
-            batch_size=cfg.batch_size,
-            num_workers=cfg.num_workers,
-            size_limit=cfg.size_limit,
-            complexity_profiler=complexity_profiler,
-            verbose=cfg.verbose,
-        )
-        print(hdf_datasets_audiocaps)
-
 
 def prepare_data_metrics_models(
     dataroot: str | Path = "data",
