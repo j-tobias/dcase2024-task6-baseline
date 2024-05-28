@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import random
+# import random
 from pathlib import Path
 from typing import Any, Callable, Iterable, Literal
 
@@ -127,7 +127,7 @@ class HDFDatamodule(LightningDataModule):
 
     def train_transform(self, item: dict[str, Any]) -> dict[str, Any]:
         refs = item["captions"]
-        ref = random.choice(refs)
+        ref = refs[-1]  # random.choice(refs)
         caption = self.tokenizer.encode(ref, disable_unk_token=True)
         caption = torch.as_tensor(caption.ids)
 
@@ -261,6 +261,7 @@ class HDFDatamodule(LightningDataModule):
             pin_memory=self.hparams["pin_memory"],
             drop_last=self.hparams["train_drop_last"],
             shuffle=True,
+            persistent_workers=True,
         )
 
     def val_dataloader(self) -> list[DataLoader]:
@@ -288,6 +289,7 @@ class HDFDatamodule(LightningDataModule):
                 pin_memory=self.hparams["pin_memory"],
                 drop_last=False,
                 shuffle=False,
+                persistent_workers=True,
             )
             for dataset in datasets
         ]
